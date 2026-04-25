@@ -1,0 +1,10 @@
+Image
+*.zip
+*.img
+out/
+split_img/
+ramdisk/
+patch/
+*.log
+.DS_Store
+Thumbs.db

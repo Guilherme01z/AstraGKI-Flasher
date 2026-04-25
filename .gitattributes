@@ -1,0 +1,17 @@
+* text=auto
+
+anykernel.sh text eol=lf
+META-INF/com/google/android/update-binary text eol=lf
+META-INF/com/google/android/updater-script text eol=lf
+README.md text eol=lf
+banner text eol=lf
+scripts/*.sh text eol=lf
+tools/ak3-core.sh text eol=lf
+
+tools/busybox binary
+tools/fec binary
+tools/httools_static binary
+tools/lptools_static binary
+tools/magiskboot binary
+tools/magiskpolicy binary
+tools/snapshotupdater_static binary
