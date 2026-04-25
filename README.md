@@ -10,7 +10,7 @@
 
 ## Overview
 
-**AstraGKI-Flasher** is a conservative AnyKernel3-based flashing package customized for the AstraGKI kernel from the ZenithKernel project.
+**AstraGKI-Flasher** is a conservative AnyKernel3-based flashing package customized for the AstraGKI kernel.
 
 It is designed to package and flash the AstraGKI GKI-style kernel `Image` while keeping the upstream AnyKernel3 flashing flow intact for recovery and kernel manager compatibility.
 
@@ -79,7 +79,7 @@ recovery.img
 
 ## CI Usage
 
-The main AstraGKI/ZenithKernel workflow can clone this repository, copy the built kernel `Image`, and generate the final flashable zip without manual steps.
+The main AstraGKI workflow can clone this repository, copy the built kernel `Image`, and generate the final flashable zip without manual steps.
 
 The build stamp must use the same timestamp format as the kernel localversion:
 
@@ -136,9 +136,9 @@ Upload only that zip as the final artifact.
 
 ---
 
-## ZenithKernel Workflow Plan
+## AstraGKI Workflow Plan
 
-In the main ZenithKernel workflow:
+In the main AstraGKI workflow:
 
 1. Replace the generic AnyKernel3 clone with:
 
@@ -181,11 +181,3 @@ test "$(find "$GITHUB_WORKSPACE" -maxdepth 1 -type f -name '*.zip' | wc -l | tr 
 ```
 
 Do not add KPM steps. Do not generate boot.img, dtbo.img, vendor_boot.img, vendor_kernel_boot.img, init_boot.img, or recovery.img.
-
----
-
-## Credits
-
-- **AnyKernel3** by **osm0sis** and contributors
-- **AstraGKI-Flasher** customization by **ZenithKernel**
-- Main kernel project: **AstraGKI / ZenithKernel**

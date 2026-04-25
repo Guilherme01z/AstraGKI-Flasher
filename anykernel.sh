@@ -1,6 +1,6 @@
 ### AnyKernel3 Ramdisk Mod Script
 ## osm0sis @ xda-developers
-## AstraGKI-Flasher customization by ZenithKernel
+## AstraGKI-Flasher customization for AstraGKI
 
 ### AnyKernel setup
 # global properties
