@@ -49,6 +49,39 @@ extract_linux_version() {
   ak3_strings "$1" 2>/dev/null | grep -m1 'Linux version [0-9]' | sed 's/^.*Linux version //' | cut -d' ' -f1
 }
 
+extract_boot_image_kernel_version() {
+  local bootimg="$1"
+  local checkdir="$AKHOME/.ak3-version-check"
+  local ret
+
+  rm -rf "$checkdir"
+  mkdir -p "$checkdir" || return 1
+  (
+    cd "$checkdir" || exit 1
+    "$BIN/magiskboot" unpack -h "$bootimg" >/dev/null 2>&1 || exit 1
+
+    kernel_file=""
+    for candidate in kernel boot.img-kernel kernel.gz Image Image.gz Image.lz4; do
+      if [ -f "$candidate" ]; then
+        kernel_file="$candidate"
+        break
+      fi
+    done
+    [ "$kernel_file" ] || exit 1
+
+    version="$(extract_linux_version "$kernel_file")"
+    if [ ! "$version" ]; then
+      "$BIN/magiskboot" decompress "$kernel_file" kernel.raw >/dev/null 2>&1
+      [ -f kernel.raw ] && version="$(extract_linux_version kernel.raw)"
+    fi
+    [ "$version" ] || exit 1
+    echo "$version"
+  )
+  ret=$?
+  rm -rf "$checkdir"
+  return $ret
+}
+
 ui_print " "
 ui_print "AstraGKI-Flasher"
 ui_print "Custom AnyKernel3-based flasher for AstraGKI"
@@ -86,7 +119,12 @@ ui_print "Flashing AstraGKI kernel Image"
 split_boot
 flash_boot
 
-WRITTEN_KERNEL_VERSION="$(extract_linux_version "$BLOCK")"
+BOOT_NEW_SIZE="$(wc -c < "$AKHOME/boot-new.img")"
+BOOT_DUMP_BLOCKS=$(( (BOOT_NEW_SIZE + 4095) / 4096 ))
+dd if="$BLOCK" of="$AKHOME/boot-written.img" bs=4096 count="$BOOT_DUMP_BLOCKS" 2>/dev/null || abort "Unable to dump written boot image. Aborting."
+
+WRITTEN_KERNEL_VERSION="$(extract_boot_image_kernel_version "$AKHOME/boot-written.img")"
+rm -f "$AKHOME/boot-written.img"
 [ "$WRITTEN_KERNEL_VERSION" ] || abort "Unable to verify written boot kernel version. Aborting."
 ui_print "Written kernel: $WRITTEN_KERNEL_VERSION"
 
