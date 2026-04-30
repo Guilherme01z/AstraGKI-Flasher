@@ -117,7 +117,12 @@ ui_print "Flashing AstraGKI kernel Image"
 # Image-only GKI flow: split the current boot image, replace the kernel Image,
 # rebuild/write boot, and leave dtbo/vendor_boot/init_boot style partitions alone.
 split_boot
-flash_boot
+if [ -f "$SPLITIMG/ramdisk.cpio" ]; then
+  unpack_ramdisk
+  write_boot
+else
+  flash_boot
+fi
 
 BOOT_NEW_SIZE="$(wc -c < "$AKHOME/boot-new.img")"
 BOOT_DUMP_BLOCKS=$(( (BOOT_NEW_SIZE + 4095) / 4096 ))
