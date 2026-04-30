@@ -27,12 +27,27 @@ supported.vendorpatchlevels=
 ## boot shell variables
 block=boot
 is_slot_device=auto
+slot_select=active
 ramdisk_compression=auto
 patch_vbmeta_flag=auto
 no_magisk_check=1
 
 # import functions/variables and setup patching - see for reference (DO NOT REMOVE)
 . tools/ak3-core.sh
+
+ak3_strings() {
+  if command -v strings >/dev/null 2>&1; then
+    strings "$1"
+  elif [ -x "$BIN/busybox" ]; then
+    "$BIN/busybox" strings "$1"
+  else
+    return 1
+  fi
+}
+
+extract_linux_version() {
+  ak3_strings "$1" 2>/dev/null | grep -m1 'Linux version [0-9]' | sed 's/^.*Linux version //' | cut -d' ' -f1
+}
 
 ui_print " "
 ui_print "AstraGKI-Flasher"
@@ -58,6 +73,11 @@ if [ "$SLOT" ]; then
 else
   ui_print "Active slot: not reported"
 fi
+ui_print "Target block: $BLOCK"
+
+EXPECTED_KERNEL_VERSION="$(extract_linux_version "$AKHOME/Image")"
+[ "$EXPECTED_KERNEL_VERSION" ] || abort "Unable to read Linux version from package Image. Aborting."
+ui_print "Package kernel: $EXPECTED_KERNEL_VERSION"
 
 ui_print "Flashing AstraGKI kernel Image"
 
@@ -65,6 +85,14 @@ ui_print "Flashing AstraGKI kernel Image"
 # rebuild/write boot, and leave dtbo/vendor_boot/init_boot style partitions alone.
 split_boot
 flash_boot
+
+WRITTEN_KERNEL_VERSION="$(extract_linux_version "$BLOCK")"
+[ "$WRITTEN_KERNEL_VERSION" ] || abort "Unable to verify written boot kernel version. Aborting."
+ui_print "Written kernel: $WRITTEN_KERNEL_VERSION"
+
+if [ "$WRITTEN_KERNEL_VERSION" != "$EXPECTED_KERNEL_VERSION" ]; then
+  abort "Written kernel version mismatch: expected $EXPECTED_KERNEL_VERSION, got $WRITTEN_KERNEL_VERSION"
+fi
 
 ui_print " "
 ui_print "Flash complete"
