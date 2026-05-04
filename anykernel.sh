@@ -1,11 +1,11 @@
 ### AnyKernel3 Ramdisk Mod Script
 ## osm0sis @ xda-developers
-## AstraGKI-Flasher customization for AstraGKI
+## AstraGKI-Flasher customization for AstraGKI-KSUN
 
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=AstraGKI Android 12 5.10 LTS
+kernel.string=AstraGKI-KSUN Android 12 5.10 LTS
 do.devicecheck=0
 do.modules=0
 do.systemless=0
@@ -84,12 +84,12 @@ extract_boot_image_kernel_version() {
 
 ui_print " "
 ui_print "AstraGKI-Flasher"
-ui_print "Custom AnyKernel3-based flasher for AstraGKI"
+ui_print "Custom AnyKernel3-based flasher for AstraGKI-KSUN"
 ui_print "Target: Android 12 / Linux 5.10 LTS / GKI boot image"
 ui_print " "
-ui_print "Preparing AstraGKI package"
+ui_print "Preparing AstraGKI-KSUN package"
 
-[ -f "$AKHOME/Image" ] || abort "AstraGKI kernel Image is missing. Aborting."
+[ -f "$AKHOME/Image" ] || abort "AstraGKI-KSUN kernel Image is missing. Aborting."
 [ -f "$AKHOME/anykernel.sh" ] || abort "anykernel.sh is missing. Aborting."
 [ -d "$AKHOME/META-INF/com/google/android" ] || abort "META-INF installer files are missing. Aborting."
 [ -f "$AKHOME/tools/ak3-core.sh" ] || abort "AK3 core script is missing. Aborting."
@@ -112,7 +112,7 @@ EXPECTED_KERNEL_VERSION="$(extract_linux_version "$AKHOME/Image")"
 [ "$EXPECTED_KERNEL_VERSION" ] || abort "Unable to read Linux version from package Image. Aborting."
 ui_print "Package kernel: $EXPECTED_KERNEL_VERSION"
 
-ui_print "Flashing AstraGKI kernel Image"
+ui_print "Flashing AstraGKI-KSUN kernel Image"
 
 # Image-only GKI flow: split the current boot image, replace the kernel Image,
 # rebuild/write boot, and leave dtbo/vendor_boot/init_boot style partitions alone.

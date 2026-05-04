@@ -1,18 +1,18 @@
 # AstraGKI-Flasher
 
-> Custom AnyKernel3-based flasher for AstraGKI.
+> Custom AnyKernel3-based flasher for AstraGKI-KSUN.
 
 ```text
-[ AstraGKI ]  [ Android 12 ]  [ Linux 5.10 LTS ]  [ GKI Image ]  [ AnyKernel3 ]
+[ AstraGKI-KSUN ]  [ Android 12 ]  [ Linux 5.10 LTS ]  [ GKI Image ]  [ AnyKernel3 ]
 ```
 
 ---
 
 ## Overview
 
-**AstraGKI-Flasher** is a conservative AnyKernel3-based flashing package customized for the AstraGKI kernel.
+**AstraGKI-Flasher** is a conservative AnyKernel3-based flashing package customized for AstraGKI-KSUN.
 
-It is designed to package and flash the AstraGKI GKI-style kernel `Image` while keeping the upstream AnyKernel3 flashing flow intact for recovery and kernel manager compatibility.
+It is designed to package and flash the AstraGKI-KSUN GKI-style kernel `Image` while keeping the upstream AnyKernel3 flashing flow intact for recovery and kernel manager compatibility.
 
 ---
 
@@ -20,17 +20,17 @@ It is designed to package and flash the AstraGKI GKI-style kernel `Image` while 
 
 | Item | Target |
 |---|---|
-| Kernel branding | AstraGKI |
+| Kernel branding | AstraGKI-KSUN |
 | Android version | Android 12 |
 | Kernel version | Linux 5.10 LTS |
 | Packaging style | GKI boot image kernel replacement |
-| Final zip format | `AstraGKI-A12-5.10-LTS-YYYYMMDD-HHMMSS.zip` |
+| Final zip format | `AstraGKI-KSUN-A12-5.10-LTS-YYYYMMDD-HHMMSS.zip` |
 
 ---
 
 ## Features
 
-- AstraGKI-specific `anykernel.sh` branding and status output
+- AstraGKI-KSUN-specific `anykernel.sh` branding and status output
 - Image-only boot flashing flow
 - A/B slot detection kept through AnyKernel3
 - Recovery and kernel manager app compatibility
@@ -45,7 +45,7 @@ It is designed to package and flash the AstraGKI GKI-style kernel `Image` while 
 The generated flashable zip contains only the files required for the AnyKernel3 flashing flow:
 
 ```text
-AstraGKI-A12-5.10-LTS-YYYYMMDD-HHMMSS.zip
+AstraGKI-KSUN-A12-5.10-LTS-YYYYMMDD-HHMMSS.zip
 ├── anykernel.sh
 ├── banner
 ├── Image
@@ -79,7 +79,7 @@ recovery.img
 
 ## CI Usage
 
-The main AstraGKI workflow can clone this repository, copy the built kernel `Image`, and generate the final flashable zip without manual steps.
+The AstraGKI-KSUN workflow can clone this repository, copy the built kernel `Image`, and generate the final flashable zip without manual steps.
 
 The build stamp must use the same timestamp format as the kernel localversion:
 
@@ -112,7 +112,7 @@ bash "$FLA_DIR/scripts/package-astragi.sh" \
 The command generates:
 
 ```text
-$GITHUB_WORKSPACE/AstraGKI-A12-5.10-LTS-YYYYMMDD-HHMMSS.zip
+$GITHUB_WORKSPACE/AstraGKI-KSUN-A12-5.10-LTS-YYYYMMDD-HHMMSS.zip
 ```
 
 Upload only that zip as the final artifact.
@@ -128,7 +128,7 @@ Upload only that zip as the final artifact.
 - `META-INF/com/google/android/update-binary` exists
 - `META-INF/com/google/android/updater-script` exists
 - required AnyKernel3 tools exist
-- final zip name matches `AstraGKI-A12-5.10-LTS-YYYYMMDD-HHMMSS.zip`
+- final zip name matches `AstraGKI-KSUN-A12-5.10-LTS-YYYYMMDD-HHMMSS.zip`
 - final zip contains the expected AnyKernel3 files
 - final zip does not contain forbidden image outputs
 - final output directory contains exactly one zip
@@ -136,9 +136,9 @@ Upload only that zip as the final artifact.
 
 ---
 
-## AstraGKI Workflow Plan
+## AstraGKI-KSUN Workflow Plan
 
-In the main AstraGKI workflow:
+In the AstraGKI-KSUN workflow:
 
 1. Replace the generic AnyKernel3 clone with:
 
@@ -162,10 +162,10 @@ bash "$ANYKERNEL3/scripts/package-astragi.sh" \
   "$GITHUB_WORKSPACE"
 ```
 
-4. Validate only the AstraGKI zip exists:
+4. Validate only the AstraGKI-KSUN zip exists:
 
 ```bash
-OUTPUT_ZIP_NAME="AstraGKI-A12-5.10-LTS-${BUILD_STAMP}.zip"
+OUTPUT_ZIP_NAME="AstraGKI-KSUN-A12-5.10-LTS-${BUILD_STAMP}.zip"
 test -f "$GITHUB_WORKSPACE/$OUTPUT_ZIP_NAME"
 test "$(find "$GITHUB_WORKSPACE" -maxdepth 1 -type f -name '*.zip' | wc -l | tr -d ' ')" = "1"
 ```
